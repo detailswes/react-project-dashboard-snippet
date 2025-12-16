@@ -8,7 +8,7 @@ import Projects from "./pages/Projects";
 
 import "./i18n";
 
-function App(): JSX.Element {
+function App(): React.ReactElement {
     return (
         <Routes>
             <Route path="/" element={<Navigate to="/auth" />} />

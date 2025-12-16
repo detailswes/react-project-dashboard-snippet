@@ -46,31 +46,31 @@ const Footer = (): ReactElement => {
                 </Link>
             )}
             <SimpleTooltip
-                tabIndex="5"
+                tabIndex={5}
                 content="Projects"
                 placement="right"
                 icon="projects"
                 active={!!location.pathname.includes("/project")}
                 to={`/projects?uid=${loggedInUser._id}`}
-                isLogoutLink={undefined}
+                isLogoutLink={false}
             />
             <SimpleTooltip
-                tabIndex="5"
+                tabIndex={5}
                 content="Team"
                 placement="right"
                 icon="team"
                 to="/team"
                 active={location.pathname === "/team"}
-                isLogoutLink={undefined}
+                isLogoutLink={false}
             />
             <SimpleTooltip
-                tabIndex="5"
+                tabIndex={5}
                 content="Account"
                 placement="right"
                 icon="account"
                 to="/account"
                 active={location.pathname === "/account"}
-                isLogoutLink={undefined}
+                isLogoutLink={false}
             />
         </div>
     );

@@ -38,8 +38,10 @@ const SigninEmail = (): ReactElement => {
     const { errors, handleChange, handleSubmit, handleBlur, values } = formik;
 
     useEffect(() => {
-        isLoggedIn && navigate("/projects", { replace: true });
-    }, [isLoggedIn]);
+        if (isLoggedIn) {
+            navigate("/projects", { replace: true });
+        }
+    }, [isLoggedIn, navigate]);
 
     useEffect(() => {
         document.title = `Sign in – Email`;
@@ -60,7 +62,7 @@ const SigninEmail = (): ReactElement => {
                 }
             }
             setShowLoader(false);
-        } catch (err) {
+        } catch {
             setShowLoader(false);
         }
     };

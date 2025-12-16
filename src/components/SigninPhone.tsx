@@ -20,8 +20,10 @@ export default function SigninPhone(): ReactElement {
     const isLoggedIn = useSelector((state: RootState) => state.user.isLoggedIn);
 
     useEffect(() => {
-        isLoggedIn && navigate("/projects", { replace: true });
-    }, [isLoggedIn]);
+        if (isLoggedIn) {
+            navigate("/projects", { replace: true });
+        }
+    }, [isLoggedIn, navigate]);
 
     const [enterKeyIsPressed, setEnterKeyIsPressed] = useState(false);
 
@@ -151,7 +153,7 @@ export default function SigninPhone(): ReactElement {
                                         setEnterKeyIsPressed(false);
                                     }
                                 }}
-                                onFocus={(e) => {
+                                onFocus={() => {
                                     setphoneNumberInValid(false);
                                 }}
                             />

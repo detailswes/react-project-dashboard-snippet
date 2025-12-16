@@ -1,3 +1,5 @@
+import React from "react";
+
 export interface customChipConfig {
     overrideClasses: string;
     icon: string;
@@ -7,7 +9,7 @@ export interface customChipConfig {
         | number
         | boolean
         | React.ReactElement<any, string | React.JSXElementConstructor<any>>
-        | React.ReactFragment
+        | Iterable<React.ReactNode>
         | React.ReactPortal
         | Iterable<React.ReactNode>
         | null
@@ -42,7 +44,7 @@ export interface modalBottomConfig {
         | number
         | boolean
         | React.ReactElement<any, string | React.JSXElementConstructor<any>>
-        | React.ReactFragment
+        | Iterable<React.ReactNode>
         | React.ReactPortal
         | Iterable<React.ReactNode>
         | null
@@ -52,7 +54,7 @@ export interface modalBottomConfig {
         | number
         | boolean
         | React.ReactElement<any, string | React.JSXElementConstructor<any>>
-        | React.ReactFragment
+        | Iterable<React.ReactNode>
         | React.ReactPortal
         | Iterable<React.ReactNode>
         | null

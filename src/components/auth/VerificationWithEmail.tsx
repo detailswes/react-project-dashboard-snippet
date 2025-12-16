@@ -41,9 +41,8 @@ const VerificationWithEmail = (props: incomingProps): ReactElement => {
                 otp: finalOtp,
             };
 
-            const res: AxiosResponse = await authService.authVerifyEmail(
-                payload
-            );
+            const res: AxiosResponse =
+                await authService.authVerifyEmail(payload);
 
             if (res.status === 201) {
                 localStorage.setItem("token", res.data.token);

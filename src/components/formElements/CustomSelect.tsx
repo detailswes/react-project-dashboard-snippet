@@ -1,5 +1,5 @@
 /* eslint-disable no-extra-boolean-cast */
-/* eslint-disable @typescript-eslint/strict-boolean-expressions */
+
 import React, { useState, useEffect, type ReactElement } from "react";
 import Select, {
     type MultiValue,
@@ -26,7 +26,7 @@ const CustomSelect = (props: {
         | number
         | boolean
         | React.ReactElement<any, string | React.JSXElementConstructor<any>>
-        | React.ReactFragment
+        | Iterable<React.ReactNode>
         | null
         | undefined;
     options:
@@ -125,8 +125,8 @@ const CustomSelect = (props: {
                 provided.isSelected !== 0 && !isSearching
                     ? "rgba(var(--color-white)/1)"
                     : provided.isSelected === 0 && !isSearching
-                    ? "rgb(var(--color-fieldNoFocus) / 1)"
-                    : "#004DF6",
+                      ? "rgb(var(--color-fieldNoFocus) / 1)"
+                      : "#004DF6",
             "&:hover": {
                 backgroundColor:
                     provided.isSelected === 0
@@ -144,7 +144,7 @@ const CustomSelect = (props: {
         menuList: (base: any, state: { selectProps: { menuIsOpen: any } }) => ({
             ...base,
             padding: 0,
-            // eslint-disable-next-line no-extra-boolean-cast
+
             border: Boolean(state.selectProps.menuIsOpen)
                 ? "1px solid rgb(var(--color-primary)/1)"
                 : null,
@@ -349,7 +349,7 @@ const CustomSelect = (props: {
         <>
             {props.isNotCreateable ? (
                 <Select
-                    styles={customStyles}
+                    styles={customStyles as any}
                     defaultValue={props.value}
                     placeholder={props.customStyles}
                     options={props.options}
@@ -358,19 +358,23 @@ const CustomSelect = (props: {
                         props.handleBlur(e);
                         handleBlur();
                     }}
-                    onChange={(selectedOption: {
-                        value: MultiValue<Option>;
-                    }) => {
+                    onChange={(
+                        selectedOption: MultiValue<Option> | SingleValue<Option>
+                    ) => {
+                        if (!selectedOption) return;
+
                         if (!Array.isArray(selectedOption)) {
                             const event = {
                                 target: {
                                     name: props.name,
-                                    value: selectedOption.value,
+                                    value: (selectedOption as any).value,
                                 },
                             };
                             props.handleChange(event);
                         } else {
-                            const temp = selectedOption.map((el) => el.value);
+                            const temp = selectedOption.map(
+                                (el: any) => el.value
+                            );
                             props.setFieldValue(props.name, temp);
                         }
                         handleOnChange(selectedOption);
@@ -379,7 +383,7 @@ const CustomSelect = (props: {
                 />
             ) : (
                 <CreatableSelect
-                    styles={customStyles}
+                    styles={customStyles as any}
                     defaultValue={props.value}
                     placeholder={props.customStyles}
                     options={props.options}
@@ -388,17 +392,23 @@ const CustomSelect = (props: {
                         props.handleBlur(e);
                         handleBlur();
                     }}
-                    onChange={(selectedOption: { value: string }): void => {
+                    onChange={(
+                        selectedOption: MultiValue<Option> | SingleValue<Option>
+                    ): void => {
+                        if (!selectedOption) return;
+
                         if (!Array.isArray(selectedOption)) {
                             const event = {
                                 target: {
                                     name: props.name,
-                                    value: selectedOption?.value,
+                                    value: (selectedOption as any)?.value,
                                 },
                             };
                             props.handleChange(event);
                         } else {
-                            const temp = selectedOption.map((el) => el.value);
+                            const temp = selectedOption.map(
+                                (el: any) => el.value
+                            );
                             props.setFieldValue(props.name, temp);
                         }
                         handleOnChange(selectedOption);

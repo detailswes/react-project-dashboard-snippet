@@ -36,12 +36,11 @@ const AddProject = (props: Props): ReactElement<Props> => {
     });
 
     const initialValues = {
-        project_name: (props.project?.project_name).length > 0 || "",
-        project_type: (props.project?.project_type).length > 0 || "production",
-        project_status: (props.project?.project_status).length > 0 || "active",
-        project_description:
-            (props.project?.project_description).length > 0 || "",
-        requested_by: (props.project?.requested_by).length > 0 || null,
+        project_name: props.project?.project_name || "",
+        project_type: props.project?.project_type || "production",
+        project_status: props.project?.project_status || "active",
+        project_description: props.project?.project_description || "",
+        requested_by: props.project?.requested_by || null,
     };
 
     const selectedRequestedByOptions: Array<{ value: string; label: string }> =
@@ -76,11 +75,11 @@ const AddProject = (props: Props): ReactElement<Props> => {
     } = formik;
 
     const submitHandler = async (values: {
-        project_name: string | true;
-        project_type: string | true;
-        project_status: string | true;
-        project_description: string | true;
-        requested_by: true | null;
+        project_name: string;
+        project_type: string;
+        project_status: string;
+        project_description: string;
+        requested_by: string[] | null;
     }): Promise<void> => {
         setShowLoader(true);
         const updatedValues = {
@@ -239,10 +238,8 @@ const AddProject = (props: Props): ReactElement<Props> => {
                             options={props.allUsers}
                             handleChange={handleChange}
                             value={selectedRequestedByOptions}
-                            // eslint-disable-next-line @typescript-eslint/no-misused-promises
                             setFieldValue={formik.setFieldValue}
                             name="requested_by"
-                            // eslint-disable-next-line @typescript-eslint/no-misused-promises
                             handleBlur={async (): Promise<void> => {
                                 await formik.setFieldTouched("requested_by");
                             }}

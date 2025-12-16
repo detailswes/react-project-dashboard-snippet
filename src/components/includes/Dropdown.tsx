@@ -42,7 +42,6 @@ export default function Dropdown({
     useEffect(() => {
         function handleClickOutside(event: any): void {
             if (
-                // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
                 wrapperRef.current &&
                 !wrapperRef.current.contains(event.target)
             ) {

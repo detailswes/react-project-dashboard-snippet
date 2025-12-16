@@ -55,13 +55,15 @@ const Projects = (): ReactElement => {
         if (searchParams.get("uid") == null) {
             navigate(`/projects?uid=${loggedInUser._id}`);
         }
-    }, []);
+    }, [searchParams, navigate, loggedInUser._id]);
     const changeTab = (tab: string): void => {
-        tab === "active"
-            ? setActiveTab({ active: true, backlog: false, archive: false })
-            : tab === "backlog"
-            ? setActiveTab({ active: false, backlog: true, archive: false })
-            : setActiveTab({ active: false, backlog: false, archive: true });
+        if (tab === "active") {
+            setActiveTab({ active: true, backlog: false, archive: false });
+        } else if (tab === "backlog") {
+            setActiveTab({ active: false, backlog: true, archive: false });
+        } else {
+            setActiveTab({ active: false, backlog: false, archive: true });
+        }
     };
 
     const getAllUsers = async (): Promise<void> => {
@@ -271,7 +273,7 @@ const Projects = (): ReactElement => {
                             requested_by: [],
                             slug: "",
                         }}
-                        updateProjects={function (arg0: string): void {
+                        updateProjects={function (): void {
                             throw new Error("Function not implemented.");
                         }}
                     />

@@ -42,8 +42,7 @@ const VerificationWithPhone = (props: incomingProps): ReactElement => {
                 vcode: finalOtp,
             };
             const res: AxiosResponse = await authService.authVerify(payload);
-
-            if (res.status === 200) {
+            if (res.status === 200 || res.status === 201) {
                 localStorage.setItem("token", res.data.token);
                 const data = {
                     _id: res.data.user._id,

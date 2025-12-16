@@ -3,11 +3,11 @@ import axiosInstance from ".";
 const projectService = {
     async saveProject(
         payload: {
-            project_name: string | true;
-            project_type: string | true;
-            project_status: string | true;
-            project_description: string | true;
-            requested_by: true | null;
+            project_name: string;
+            project_type: string;
+            project_status: string;
+            project_description: string;
+            requested_by: string[] | null;
         },
         slug = ""
     ) {

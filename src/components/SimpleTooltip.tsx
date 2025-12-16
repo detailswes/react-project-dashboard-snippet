@@ -9,12 +9,10 @@ import { type simpleTooltipConfig } from "../types/tooltipTypes";
 
 const SimpleTooltip = ({
     content,
-    tabIndex,
     icon,
     placement,
     active,
     isLogoutLink,
-    to,
 }: simpleTooltipConfig): ReactElement => {
     const width = useViewport();
     const dispatch = useDispatch();
@@ -39,11 +37,11 @@ const SimpleTooltip = ({
 
     return (
         <>
-            {isLogoutLink ?? false ? (
+            {(isLogoutLink ?? false) ? (
                 <Link
                     onClick={logoutHandler}
                     className={`sm:mb-4 w-1/3 sm:w-auto sm:border border-transparent sm:hover:border-fieldOutline rounded-lg flex flex-wrap items-center justify-center ${
-                        active ?? false ? "active" : ""
+                        (active ?? false) ? "active" : ""
                     }`}
                     to={""}
                 >
@@ -69,7 +67,7 @@ const SimpleTooltip = ({
                     to={""}
                     ref={setTriggerRef}
                     className={`sm:mb-4 w-1/3 sm:w-auto sm:border border-transparent sm:hover:border-fieldOutline rounded-lg flex flex-wrap items-center justify-center ${
-                        active ?? false ? "active" : ""
+                        (active ?? false) ? "active" : ""
                     }`}
                 >
                     <span className="w-10 h-10 flex-wrap items-center justify-center flex relative">
