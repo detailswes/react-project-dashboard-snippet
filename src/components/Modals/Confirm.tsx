@@ -27,7 +27,7 @@ const ConfirmModal = ({
                     attributes={{
                         type: "submit",
                         disabled: false,
-                        value: Boolean(attributes?.buttonText) || "Delete",
+                        value: attributes?.buttonText ?? "Delete",
                         clickEvent: () => {
                             attributes?.clickEvent();
                         },

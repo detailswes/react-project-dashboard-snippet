@@ -1,5 +1,5 @@
 import React, { type ReactElement } from "react";
-import { type InputFieldConfig } from "../../types/formElemetsTypes";
+import { type InputFieldConfig } from "../../types/formElementsTypes";
 import Tooltip from "../Tooltip";
 
 const InputField = ({

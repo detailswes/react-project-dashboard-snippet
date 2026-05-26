@@ -11,19 +11,13 @@ import InputField from "../formElements/InputField";
 import RadioField from "../formElements/RadioField";
 import TextAreaField from "../formElements/TextAreaField";
 import { type AxiosResponse } from "axios";
+import type { Project, UserOption } from "../../types/projectTypes";
 
 interface Props {
-    project: {
-        project_name: string;
-        project_type: string;
-        project_status: string;
-        project_description: string;
-        requested_by: string[];
-        slug: string;
-    };
+    project: Project;
     closeModal: () => void;
-    updateProjects: (arg0: string) => void;
-    allUsers: any;
+    updateProjects: (updatedProject: Project) => void;
+    allUsers: UserOption[];
     editMode?: boolean;
 }
 
@@ -36,12 +30,11 @@ const AddProject = (props: Props): ReactElement<Props> => {
     });
 
     const initialValues = {
-        project_name: (props.project?.project_name).length > 0 || "",
-        project_type: (props.project?.project_type).length > 0 || "production",
-        project_status: (props.project?.project_status).length > 0 || "active",
-        project_description:
-            (props.project?.project_description).length > 0 || "",
-        requested_by: (props.project?.requested_by).length > 0 || null,
+        project_name: props.project?.project_name ?? "",
+        project_type: props.project?.project_type ?? "production",
+        project_status: props.project?.project_status ?? "active",
+        project_description: props.project?.project_description ?? "",
+        requested_by: props.project?.requested_by ?? null,
     };
 
     const selectedRequestedByOptions: Array<{ value: string; label: string }> =
@@ -76,11 +69,11 @@ const AddProject = (props: Props): ReactElement<Props> => {
     } = formik;
 
     const submitHandler = async (values: {
-        project_name: string | true;
-        project_type: string | true;
-        project_status: string | true;
-        project_description: string | true;
-        requested_by: true | null;
+        project_name: string;
+        project_type: string;
+        project_status: string;
+        project_description: string;
+        requested_by: string[] | null;
     }): Promise<void> => {
         setShowLoader(true);
         const updatedValues = {
@@ -88,7 +81,7 @@ const AddProject = (props: Props): ReactElement<Props> => {
         };
         try {
             const res: AxiosResponse<{
-                project: string;
+                project: Project;
                 slug: string;
             }> = await projectService.saveProject(
                 updatedValues,
@@ -106,7 +99,6 @@ const AddProject = (props: Props): ReactElement<Props> => {
             setShowLoader(false);
         } catch (err) {
             setShowLoader(false);
-            console.log(err);
         }
     };
 
@@ -117,8 +109,9 @@ const AddProject = (props: Props): ReactElement<Props> => {
                     <InputField
                         label="Project name"
                         error={
-                            errors?.project_name != null &&
-                            touched?.project_name
+                            touched?.project_name === true
+                                ? errors?.project_name
+                                : undefined
                         }
                         value={values.project_name}
                         onChange={handleChange}
@@ -252,7 +245,7 @@ const AddProject = (props: Props): ReactElement<Props> => {
                             }
                             isMulti
                             isNotCreateable={undefined}
-                            customStyles={undefined}
+                            placeholder={undefined}
                         />
                     </div>
                 </div>
@@ -262,7 +255,7 @@ const AddProject = (props: Props): ReactElement<Props> => {
                     classes="custom-button custom-button-large custom-button-fill-primary w-auto"
                     attributes={{
                         type: "button",
-                        disabled: Boolean(values.project_name),
+                        disabled: values.project_name.length === 0,
                         value: "Save project",
                         clickEvent: () => {
                             handleSubmit();

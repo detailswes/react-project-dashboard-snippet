@@ -1,7 +1,7 @@
 import React, { type ReactElement } from "react";
 import Tooltip from "../Tooltip";
 
-import { type TextAreaConfig } from "../../types/formElemetsTypes";
+import { type TextAreaConfig } from "../../types/formElementsTypes";
 
 const TextAreaField = ({
     value,
@@ -15,7 +15,8 @@ const TextAreaField = ({
     inputClass = "custom-input-field  resize-none",
     labelClass = "field-label text-left",
     rows = 2,
-    toolTipText = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    toolTipText,
+    showTooltip = false,
 }: TextAreaConfig): ReactElement => {
     const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>): void => {
         onChange(e);
@@ -30,13 +31,15 @@ const TextAreaField = ({
             {label.length > 0 && (
                 <label className={labelClass} tabIndex={labelTabIndex}>
                     {label}
-                    <Tooltip
-                        content={toolTipText}
-                        tabIndex={undefined}
-                        icon={undefined}
-                        placement={undefined}
-                        isLogoutLink={false}
-                    />
+                    {showTooltip && toolTipText != null && (
+                        <Tooltip
+                            content={toolTipText}
+                            tabIndex={undefined}
+                            icon={undefined}
+                            placement={undefined}
+                            isLogoutLink={false}
+                        />
+                    )}
                 </label>
             )}
             <textarea

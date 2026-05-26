@@ -26,7 +26,7 @@ const CustomCircularProgressbar = ({
         if (currentProgress === value) {
             return;
         }
-        const progressIntervalFunction = setInterval(progressInterval, 1);
+        const progressIntervalFunction = setInterval(progressInterval, 16);
         return () => {
             clearInterval(progressIntervalFunction);
         };

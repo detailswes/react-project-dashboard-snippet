@@ -1,7 +1,7 @@
 /* eslint-disable no-extra-boolean-cast */
 import React, { type ReactElement } from "react";
 import { Link } from "react-router-dom";
-import ListsSkelton from "../../Skeleton/Projects/ListsSkelton";
+import ListsSkeleton from "../../Skeleton/Projects/ListsSkeleton";
 import CustomChip from "../../includes/CustomChip";
 import moment from "moment";
 import startCase from "lodash/startCase";
@@ -115,7 +115,7 @@ const Listing = (props: projectListingConfig): ReactElement => {
                                                         <div className="mr-2 mt-2">
                                                             <CustomChip
                                                                 overrideClasses="!mx-0"
-                                                                icon="missig"
+                                                                icon="missing"
                                                                 content="Status missing"
                                                                 progressComplete={
                                                                     undefined
@@ -130,7 +130,7 @@ const Listing = (props: projectListingConfig): ReactElement => {
                                                         <div className="mr-2 mt-2">
                                                             <CustomChip
                                                                 overrideClasses="!mx-0"
-                                                                icon="missig"
+                                                                icon="missing"
                                                                 content="Status expired"
                                                                 progressComplete={
                                                                     undefined
@@ -180,7 +180,7 @@ const Listing = (props: projectListingConfig): ReactElement => {
             </div>
         </div>
     ) : (
-        <ListsSkelton />
+        <ListsSkeleton />
     );
 };
 

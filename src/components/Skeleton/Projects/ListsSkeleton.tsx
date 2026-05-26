@@ -3,14 +3,14 @@ import { Link } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 
-const ListsSkelton = (): ReactElement => {
+const ListsSkeleton = (): ReactElement => {
     return (
         <>
             <div className="custom-medium-container">
                 <div className="px-4 sm:px-0">
                     <div className="mb-4 mt-8 ">
                         <ul className="list">
-                            {Array(3).map((item, index) => (
+                            {Array.from({ length: 3 }).map((_, index) => (
                                 <div className="project-listing" key={index}>
                                     <Link to="#" className="project-wrap">
                                         <span className="project-content-wrap flex flex-col items-start max-w-[95%]">
@@ -43,4 +43,4 @@ const ListsSkelton = (): ReactElement => {
     );
 };
 
-export default ListsSkelton;
+export default ListsSkeleton;

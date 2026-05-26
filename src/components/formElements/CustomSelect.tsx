@@ -21,14 +21,7 @@ const CustomSelect = (props: {
         | PropsValue<any>
         | undefined;
     isNotCreateable: any;
-    customStyles:
-        | string
-        | number
-        | boolean
-        | React.ReactElement<any, string | React.JSXElementConstructor<any>>
-        | React.ReactFragment
-        | null
-        | undefined;
+    placeholder?: string;
     options:
         | OptionsOrGroups<{ label: any }, GroupBase<{ label: any }>>
         | undefined;
@@ -48,8 +41,6 @@ const CustomSelect = (props: {
         | MultiValue<{ label: any }>
         | SingleValue<{ label: any }>
     >("");
-    const [isSearching, setIsSearching] = useState(false);
-
     const handleBlur = (): void => {
         if (currentSelectValue !== null) {
             const length =
@@ -86,17 +77,13 @@ const CustomSelect = (props: {
         { label }: Option,
         { inputValue }: InputValue
     ): ReactElement {
-        if (inputValue !== null) {
-            setIsSearching(true);
-        } else {
-            setIsSearching(false);
-        }
+        const isSearching = inputValue !== null && inputValue.length > 0;
         return (
             <Highlighter
                 searchWords={[inputValue]}
                 textToHighlight={label}
                 highlightStyle={{
-                    backgroundColor: "#ffffff",
+                    backgroundColor: isSearching ? "#ffffff" : "transparent",
                     color: "#737373",
                 }}
             />
@@ -118,15 +105,13 @@ const CustomSelect = (props: {
             borderBottom: "1px solid rgb(var(--color-fieldOutline)/1)",
             cursor: "pointer",
             backgroundColor:
-                provided.isSelected !== 0 && !isSearching
+                provided.isSelected !== 0
                     ? "rgba(var(--color-primary)/1)"
                     : null,
             color:
-                provided.isSelected !== 0 && !isSearching
+                provided.isSelected !== 0
                     ? "rgba(var(--color-white)/1)"
-                    : provided.isSelected === 0 && !isSearching
-                    ? "rgb(var(--color-fieldNoFocus) / 1)"
-                    : "#004DF6",
+                    : "rgb(var(--color-fieldNoFocus) / 1)",
             "&:hover": {
                 backgroundColor:
                     provided.isSelected === 0
@@ -349,15 +334,17 @@ const CustomSelect = (props: {
         <>
             {props.isNotCreateable ? (
                 <Select
+                    // @ts-expect-error — custom style object shape is intentionally non-standard
                     styles={customStyles}
                     defaultValue={props.value}
-                    placeholder={props.customStyles}
+                    placeholder={props.placeholder}
                     options={props.options}
                     isMulti={props.isMulti}
                     onBlur={(e) => {
                         props.handleBlur(e);
                         handleBlur();
                     }}
+                    // @ts-expect-error — runtime array/object discrimination is handled inside
                     onChange={(selectedOption: {
                         value: MultiValue<Option>;
                     }) => {
@@ -379,15 +366,17 @@ const CustomSelect = (props: {
                 />
             ) : (
                 <CreatableSelect
+                    // @ts-expect-error — custom style object shape is intentionally non-standard
                     styles={customStyles}
                     defaultValue={props.value}
-                    placeholder={props.customStyles}
+                    placeholder={props.placeholder}
                     options={props.options}
                     isMulti={props.isMulti}
                     onBlur={(e) => {
                         props.handleBlur(e);
                         handleBlur();
                     }}
+                    // @ts-expect-error — runtime array/object discrimination is handled inside
                     onChange={(selectedOption: { value: string }): void => {
                         if (!Array.isArray(selectedOption)) {
                             const event = {

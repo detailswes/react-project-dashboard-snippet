@@ -59,7 +59,7 @@ export default function Dropdown({
         document.addEventListener("keydown", handleEscape);
         return () => {
             document.removeEventListener("mousedown", handleClickOutside);
-            document.addEventListener("keydown", handleEscape);
+            document.removeEventListener("keydown", handleEscape);
         };
     }, [wrapperRef]);
 
@@ -102,10 +102,17 @@ export default function Dropdown({
                                     }}
                                     className="flex items-center px-5 py-2 text-gray-700 text-13 font-inter-medium hover:bg-[#FECD48] hover:text-black cursor-pointer"
                                 >
-                                    <option.icon
-                                        class-name="flex-shrink-0 text-gray-400 mr-3"
-                                        aria-hidden="true"
-                                    />
+                                    {React.createElement(
+                                        option.icon as unknown as React.ComponentType<{
+                                            className?: string;
+                                            "aria-hidden"?: string;
+                                        }>,
+                                        {
+                                            className:
+                                                "flex-shrink-0 text-gray-400 mr-3",
+                                            "aria-hidden": "true",
+                                        }
+                                    )}
                                     {option.name}
                                 </li>
                             ))}

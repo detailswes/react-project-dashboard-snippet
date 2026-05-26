@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { usePopperTooltip } from "react-popper-tooltip";
 import "react-popper-tooltip/dist/styles.css";
 import useViewport from "../hooks/use-viewport";
-import { userActions } from "../store/slices/userSlice";
+import { clearAuthSession } from "../utils/authSession";
 import { useDispatch } from "react-redux";
 import { type simpleTooltipConfig } from "../types/tooltipTypes";
 
@@ -20,9 +20,7 @@ const SimpleTooltip = ({
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const logoutHandler = (): void => {
-        dispatch(userActions.userLoggedIn(false));
-        localStorage.removeItem("token");
-        localStorage.removeItem("user");
+        clearAuthSession(dispatch);
         navigate("/");
     };
     const {

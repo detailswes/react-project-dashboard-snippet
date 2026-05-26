@@ -1,102 +1,79 @@
 import React, { useState, useEffect, type ReactElement } from "react";
+import Logo from "./Logo";
 import Button from "../components/formElements/Button";
 import { Link, useNavigate } from "react-router-dom";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import authService from "../services/authService";
-import VerificationWithPhone from "../components/auth/VerificationWithPhone";
+import VerificationOtp from "./auth/VerificationOtp";
 import { toastSuccess } from "../utils/toast";
-import { useSelector } from "react-redux";
-import type { RootState } from "../store";
+import { useDispatch } from "react-redux";
+import { useRedirectIfLoggedIn } from "../hooks/use-redirect-if-logged-in";
+import { persistAuthSession } from "../utils/authSession";
 
 export default function SigninPhone(): ReactElement {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const [phone, setPhone] = useState("");
     const [showLoader, setShowLoader] = useState(false);
     const [phoneNumberInValid, setphoneNumberInValid] = useState(false);
-    const [showVWPComponent, setShowVWPComponent] = useState(false);
+    const [showOtpStep, setShowOtpStep] = useState(false);
     const [selectedCountryPhoneLength, setSelectedCountryPhoneLength] =
-        useState(Number);
-    const isLoggedIn = useSelector((state: RootState) => state.user.isLoggedIn);
+        useState(0);
 
-    useEffect(() => {
-        isLoggedIn && navigate("/projects", { replace: true });
-    }, [isLoggedIn]);
-
-    const [enterKeyIsPressed, setEnterKeyIsPressed] = useState(false);
+    useRedirectIfLoggedIn();
 
     const verificationCodeHandler = async (resend = false): Promise<void> => {
         if (phone.length === selectedCountryPhoneLength) {
             setShowLoader(true);
             try {
-                let finalPhoneNumber = "";
-                if (phone.length > 0) {
-                    finalPhoneNumber = `+${phone}`;
-                }
+                const finalPhoneNumber = phone.length > 0 ? `+${phone}` : "";
                 await authService.requestVerificationCodeByPhone(
                     finalPhoneNumber
                 );
-                setShowVWPComponent(true);
-                setShowLoader(false);
+                setShowOtpStep(true);
                 if (resend) {
                     toastSuccess("Code resend succesfully!");
                 }
-            } catch (error) {
-                console.log(error);
-                setShowLoader(false);
+            } catch {
                 setphoneNumberInValid(true);
+            } finally {
+                setShowLoader(false);
             }
         } else {
-            setShowLoader(false);
             setphoneNumberInValid(true);
         }
+    };
+
+    const handleVerify = async (otp: string): Promise<void> => {
+        const finalPhone = phone.length > 0 ? `+${phone}` : "";
+        const res = await authService.authVerify({
+            phone_number: finalPhone,
+            vcode: otp,
+        });
+        if (res.status !== 200) {
+            throw new Error(
+                `Phone verification failed with status ${res.status}`
+            );
+        }
+        persistAuthSession(dispatch, res.data);
+        navigate("/projects");
     };
 
     useEffect(() => {
         document.title = `Sign in - Phone`;
     }, []);
 
-    useEffect(() => {
-        if (enterKeyIsPressed) {
-            void verificationCodeHandler();
-        }
-    }, [enterKeyIsPressed]);
-
     return (
         <>
-            {!showVWPComponent && (
+            {!showOtpStep && (
                 <div className="custom-container text-center">
                     <div className="header hidden sm:block">
                         <Link
                             to="/"
                             className="mx-auto mb-20 mt-9 inline-block"
                         >
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="62"
-                                height="15"
-                                viewBox="0 0 62 15"
-                                fill="none"
-                            >
-                                <path
-                                    fillRule="evenodd"
-                                    clipRule="evenodd"
-                                    d="M28.2304 10.6421L23.2193 0L16.1406 14.4376H26.3695H30.0176H40.2464L33.4481 0L28.2304 10.6421Z"
-                                    fill="#FE7A48"
-                                />
-                                <path
-                                    fillRule="evenodd"
-                                    clipRule="evenodd"
-                                    d="M50.7648 0.982422H40.252V9.7431C40.252 12.6461 42.6053 14.9995 45.5084 14.9995C48.4114 14.9995 50.7648 12.6461 50.7648 9.7431V0.982422ZM61.2793 0.982422H50.7664V9.7431C50.7664 12.6461 53.1198 14.9995 56.0229 14.9995C58.9259 14.9995 61.2793 12.6461 61.2793 9.7431V0.982422Z"
-                                    fill="#044FF5"
-                                />
-                                <path
-                                    fillRule="evenodd"
-                                    clipRule="evenodd"
-                                    d="M0.72168 1.11987H6.74903V4.48188H9.13035V1.11987H15.1577V14.4361H9.13035V11.0699H6.74903V14.4361H0.72168V1.11987Z"
-                                    fill="#FECD48"
-                                />
-                            </svg>
+                            <Logo />
                         </Link>
                     </div>
                     <div className="custom-small-container">
@@ -108,8 +85,16 @@ export default function SigninPhone(): ReactElement {
                             <PhoneInput
                                 country={"us"}
                                 value={phone}
-                                onChange={(phone) => {
+                                onChange={(phone, country) => {
                                     setPhone(phone);
+                                    const data = country as {
+                                        format?: string;
+                                    };
+                                    if (data?.format != null) {
+                                        const length =
+                                            data.format.split(".").length - 1;
+                                        setSelectedCountryPhoneLength(length);
+                                    }
                                 }}
                                 enableSearch
                                 searchPlaceholder="Search"
@@ -128,13 +113,12 @@ export default function SigninPhone(): ReactElement {
                                     autoFocus: true,
                                 }}
                                 onBlur={(
-                                    e,
+                                    _e,
                                     country: {
-                                        format: "string";
-                                        countryCode: "string";
+                                        format: string;
                                     }
                                 ) => {
-                                    const length: number =
+                                    const length =
                                         country.format.split(".").length - 1;
                                     setSelectedCountryPhoneLength(length);
                                     if (
@@ -146,12 +130,10 @@ export default function SigninPhone(): ReactElement {
                                 }}
                                 onKeyDown={(e) => {
                                     if (e.key === "Enter") {
-                                        setEnterKeyIsPressed(true);
-                                    } else {
-                                        setEnterKeyIsPressed(false);
+                                        void verificationCodeHandler();
                                     }
                                 }}
-                                onFocus={(e) => {
+                                onFocus={() => {
                                     setphoneNumberInValid(false);
                                 }}
                             />
@@ -184,14 +166,16 @@ export default function SigninPhone(): ReactElement {
                     </div>
                 </div>
             )}
-            {showVWPComponent && (
-                <VerificationWithPhone
-                    phone={`+${phone}`}
-                    hideVWPComponent={() => {
-                        setShowVWPComponent(false);
-                    }}
-                    resendCode={() => {
+            {showOtpStep && (
+                <VerificationOtp
+                    mode="phone"
+                    identifier={`+${phone}`}
+                    onVerify={handleVerify}
+                    onResend={() => {
                         void verificationCodeHandler(true);
+                    }}
+                    onChangeIdentifier={() => {
+                        setShowOtpStep(false);
                     }}
                 />
             )}

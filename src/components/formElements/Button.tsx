@@ -1,6 +1,6 @@
 import React, { type ReactElement } from "react";
 import { useTranslation } from "react-i18next";
-import { type ButtonConfig } from "../../types/formElemetsTypes";
+import { type ButtonConfig } from "../../types/formElementsTypes";
 const Button = (props: ButtonConfig): ReactElement => {
     const { t } = useTranslation();
 
@@ -66,7 +66,7 @@ const Button = (props: ButtonConfig): ReactElement => {
                         props.attributes.loader ?? false ? "hidden" : ""
                     }`}
                 >
-                    {t(props.attributes.value)}
+                    {t(props.attributes.value ?? "")}
                 </span>
             </button>
         </>

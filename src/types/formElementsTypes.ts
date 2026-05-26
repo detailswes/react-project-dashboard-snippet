@@ -1,10 +1,10 @@
 export interface InputFieldConfig {
-    value: any;
+    value: string | number;
     label: string;
     labelTabIndex?: number;
     placeholder: string;
-    onChange: (event: any) => void;
-    onBlur: (event: any) => void;
+    onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    onBlur: (event: React.FocusEvent<HTMLInputElement>) => void;
     error?: string | undefined | null | boolean;
     name: string;
     inputClass?: string;
@@ -15,11 +15,11 @@ export interface InputFieldConfig {
 }
 
 export interface RadioFieldConfig {
-    value: any;
+    value: string | number;
     label: string;
     labelTabIndex?: number | undefined;
-    onChange: (event: any) => void;
-    onBlur: (event: any) => void;
+    onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    onBlur: (event: React.ChangeEvent<HTMLInputElement>) => void;
     error?: string;
     checked?: boolean;
     name: string;
@@ -29,18 +29,19 @@ export interface RadioFieldConfig {
 }
 
 export interface TextAreaConfig {
-    value: any;
+    value: string;
     label: string;
     placeholder: string;
     labelTabIndex?: number | undefined;
-    onChange: (event: any) => void;
-    onBlur: (event: any) => void;
+    onChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
+    onBlur: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
     error?: string | undefined | null | boolean;
     name: string;
     inputClass?: string;
     labelClass?: string;
     rows?: number;
     toolTipText?: string;
+    showTooltip?: boolean;
 }
 
 export interface ButtonConfig {
@@ -52,7 +53,7 @@ export interface ButtonConfig {
             | React.MouseEventHandler<HTMLButtonElement>
             | undefined
             | (() => Promise<void>);
-        value?: any;
+        value?: string;
     };
     classes: string;
 }
@@ -62,6 +63,6 @@ export interface ButtonAttributesConfig {
     loader: boolean;
     disabled: boolean | undefined;
     clickEvent: () => void;
-    value: any;
+    value: string;
     buttonText?: string;
 }

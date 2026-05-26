@@ -3,18 +3,12 @@ import { Link } from "react-router-dom";
 import CustomModal from "../../includes/Modal";
 import AddProject from "../AddProject";
 import ConfirmModal from "../../Modals/Confirm";
+import type { Project, UserOption } from "../../../types/projectTypes";
 
 const SupportTab = (props: {
-    project: {
-        project_name: string;
-        project_type: string;
-        project_status: string;
-        project_description: string;
-        requested_by: string[];
-        slug: string;
-    };
-    allUsers: any;
-    updateCurrentProject: (arg0: string) => void;
+    project: Project;
+    allUsers: UserOption[];
+    updateCurrentProject: (project: Project) => void;
     deleteAction: () => void;
 }): ReactElement => {
     const [modalIsOpen, setIsOpen] = useState(false);

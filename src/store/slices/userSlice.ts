@@ -1,19 +1,21 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
-interface userInfoType {
-    isLoggedIn: boolean;
-    userInfo: {
-        _id: string;
-        is_updated: string;
-        sign_in_method: string;
-    };
+interface UserInfo {
+    _id: string;
+    is_updated: boolean;
+    sign_in_method: string;
 }
 
-const initialState: userInfoType = {
+interface UserState {
+    isLoggedIn: boolean;
+    userInfo: UserInfo;
+}
+
+const initialState: UserState = {
     isLoggedIn: false,
     userInfo: {
         _id: "",
-        is_updated: "",
+        is_updated: false,
         sign_in_method: "",
     },
 };
@@ -22,11 +24,19 @@ const userSlice = createSlice({
     name: "userSlice",
     initialState,
     reducers: {
-        userLoggedIn(state, action) {
+        userLoggedIn(state, action: PayloadAction<boolean>) {
             state.isLoggedIn = action.payload;
         },
-        userInfo(state, action) {
+        userInfo(state, action: PayloadAction<UserInfo>) {
             state.userInfo = action.payload;
+        },
+        clearAuth(state) {
+            state.isLoggedIn = false;
+            state.userInfo = {
+                _id: "",
+                is_updated: false,
+                sign_in_method: "",
+            };
         },
     },
 });

@@ -1,6 +1,6 @@
 import React, { type ReactElement } from "react";
 
-import { type RadioFieldConfig } from "../../types/formElemetsTypes";
+import { type RadioFieldConfig } from "../../types/formElementsTypes";
 
 // interface RadioFieldType {
 //     value: any;
