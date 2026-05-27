@@ -4,28 +4,37 @@
 
 ---
 
-## Table of Contents
+## About This Project
 
-1. [What Problem This Solves](#what-problem-this-solves)
-2. [What You'll Learn](#what-youll-learn)
-3. [Features](#features)
-4. [Tech Stack](#tech-stack)
-5. [Architecture Overview](#architecture-overview)
-6. [Project Structure](#project-structure)
-7. [Getting Started](#getting-started)
-8. [Environment Variables](#environment-variables)
-9. [Local Development (Mock API)](#local-development-mock-api)
-10. [Authentication Flow](#authentication-flow)
-11. [Routes](#routes)
-12. [Available Scripts](#available-scripts)
-13. [Testing](#testing)
-14. [Security Notes](#security-notes)
-15. [Related Documentation](#related-documentation)
-16. [Limitations](#limitations)
+This is a **browser-only** React app—no server code in the repo. You sign in with a one-time code sent to your phone or email, then land on a **projects dashboard** where you can view, add, and edit work items grouped as active, backlog, or archive.
+
+It is a reference you can run locally (with a built-in mock API) or point at your own backend. The focus is real-world SPA habits: keeping users signed in safely, blocking pages until login, and organizing UI so forms, lists, and API calls stay easy to maintain.
 
 ---
 
-## What Problem This Solves
+## Table of Contents
+
+1. [About This Project](#about-this-project)
+2. [What Problem This Solves (For Developers)](#what-problem-this-solves-for-developers)
+3. [What You'll Learn](#what-youll-learn)
+4. [Features](#features)
+5. [Tech Stack](#tech-stack)
+6. [Architecture Overview](#architecture-overview)
+7. [Project Structure](#project-structure)
+8. [Getting Started](#getting-started)
+9. [Environment Variables](#environment-variables)
+10. [Local Development (Mock API)](#local-development-mock-api)
+11. [Authentication Flow](#authentication-flow)
+12. [Routes](#routes)
+13. [Available Scripts](#available-scripts)
+14. [Testing](#testing)
+15. [Security Notes](#security-notes)
+16. [Related Documentation](#related-documentation)
+17. [Limitations](#limitations)
+
+---
+
+## What Problem This Solves (For Developers)
 
 Building a **client-side React application** that talks to a separate auth/API backend involves the same questions on every project:
 
