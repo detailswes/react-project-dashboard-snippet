@@ -1,14 +1,16 @@
-# code-snippet-react
+# React-Project-Dashboard-Snippet
 
-> A frontend-only React reference app demonstrating OTP authentication, protected routing, and a project management dashboard — with patterns you can reuse in production SPAs.
+> A frontend-only React reference application showcasing OTP authentication, protected routes, and a project management dashboard — built with patterns commonly used in modern production SPAs.
 
 ---
 
 ## About This Project
 
-This is a **browser-only** React app—no server code in the repo. You sign in with a one-time code sent to your phone or email, then land on a **projects dashboard** where you can view, add, and edit work items grouped as active, backlog, or archive.
+This project is a frontend-only React application where users can sign in using a one-time password (OTP) sent via phone or email and access a projects dashboard to view, create, and manage work items across active, backlog, and archived sections.
 
-It is a reference you can run locally (with a built-in mock API) or point at your own backend. The focus is real-world SPA habits: keeping users signed in safely, blocking pages until login, and organizing UI so forms, lists, and API calls stay easy to maintain.
+The application can run locally using a built-in mock API or be connected directly to your own backend services.
+
+The main focus of this project is demonstrating practical single-page application patterns used in real-world frontend development, including secure authentication flows, protected routing, persistent session handling, scalable component architecture, and maintainable API integration patterns.
 
 ---
 
