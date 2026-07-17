@@ -1,4 +1,4 @@
-import { rest } from "msw";
+import { http, HttpResponse } from "msw";
 
 const mockUser = {
     _id: "mock-user-001",
@@ -38,68 +38,68 @@ const mockProjects = [
 ];
 
 export const handlers = [
-    rest.post("*/auth/request", (_req, res, ctx) =>
-        res(ctx.status(200), ctx.json({ message: "OTP sent" }))
+    http.post("*/auth/request", () =>
+        HttpResponse.json({ message: "OTP sent" }, { status: 200 })
     ),
-    rest.post("*/auth/request/email", (_req, res, ctx) =>
-        res(ctx.status(202), ctx.json({ message: "OTP sent" }))
+    http.post("*/auth/request/email", () =>
+        HttpResponse.json({ message: "OTP sent" }, { status: 202 })
     ),
-    rest.post("*/auth/verify", (_req, res, ctx) =>
-        res(
-            ctx.status(200),
-            ctx.json({
+    http.post("*/auth/verify", () =>
+        HttpResponse.json(
+            {
                 token: "mock-jwt-token",
                 user: { ...mockUser, sign_in_method: "phone" },
-            })
+            },
+            { status: 200 }
         )
     ),
-    rest.post("*/auth/verify/email", (_req, res, ctx) =>
-        res(
-            ctx.status(201),
-            ctx.json({
+    http.post("*/auth/verify/email", () =>
+        HttpResponse.json(
+            {
                 token: "mock-jwt-token",
                 user: { ...mockUser, sign_in_method: "email" },
-            })
+            },
+            { status: 201 }
         )
     ),
-    rest.get("*/projects/all/active/:userId", (_req, res, ctx) =>
-        res(
-            ctx.status(200),
-            ctx.json(mockProjects.filter((p) => p.project_status === "active"))
+    http.get("*/projects/all/active/:userId", () =>
+        HttpResponse.json(
+            mockProjects.filter((p) => p.project_status === "active"),
+            { status: 200 }
         )
     ),
-    rest.get("*/projects/all/backlog/:userId", (_req, res, ctx) =>
-        res(
-            ctx.status(200),
-            ctx.json(mockProjects.filter((p) => p.project_status === "backlog"))
+    http.get("*/projects/all/backlog/:userId", () =>
+        HttpResponse.json(
+            mockProjects.filter((p) => p.project_status === "backlog"),
+            { status: 200 }
         )
     ),
-    rest.get("*/projects/all/archive/:userId", (_req, res, ctx) =>
-        res(ctx.status(200), ctx.json([]))
+    http.get("*/projects/all/archive/:userId", () =>
+        HttpResponse.json([], { status: 200 })
     ),
-    rest.get("*/users/all", (_req, res, ctx) =>
-        res(
-            ctx.status(200),
-            ctx.json({
+    http.get("*/users/all", () =>
+        HttpResponse.json(
+            {
                 user: [
                     { full_name: "Alice" },
                     { full_name: "Bob" },
                     { full_name: "Charlie" },
                 ],
-            })
+            },
+            { status: 200 }
         )
     ),
-    rest.post("*/projects/new", (_req, res, ctx) =>
-        res(
-            ctx.status(201),
-            ctx.json({
+    http.post("*/projects/new", () =>
+        HttpResponse.json(
+            {
                 slug: "new-demo-project",
                 project: {
                     ...mockProjects[0],
                     slug: "new-demo-project",
                     project_name: "New Project",
                 },
-            })
+            },
+            { status: 201 }
         )
     ),
 ];
