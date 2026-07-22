@@ -1,0 +1,55 @@
+diff --git a/node_modules/react-quill-new/node_modules/quill/formats/formula.js b/node_modules/react-quill-new/node_modules/quill/formats/formula.js
+index 1c1b1a5..fae92bc 100644
+--- a/node_modules/react-quill-new/node_modules/quill/formats/formula.js
++++ b/node_modules/react-quill-new/node_modules/quill/formats/formula.js
+@@ -1,4 +1,13 @@
+ import Embed from '../blots/embed.js';
++function escapeHtml(value) {
++  return String(value).replace(/[&<>"']/g, char => ({
++    '&': '&amp;',
++    '<': '&lt;',
++    '>': '&gt;',
++    '"': '&quot;',
++    "'": '&#39;'
++  })[char]);
++}
+ class Formula extends Embed {
+   static blotName = 'formula';
+   static className = 'ql-formula';
+@@ -26,7 +35,7 @@ class Formula extends Embed {
+     const {
+       formula
+     } = this.value();
+-    return `<span>${formula}</span>`;
++    return `<span>${escapeHtml(formula)}</span>`;
+   }
+ }
+ export default Formula;
+diff --git a/node_modules/react-quill-new/node_modules/quill/formats/video.js b/node_modules/react-quill-new/node_modules/quill/formats/video.js
+index 135a297..8fec78a 100644
+--- a/node_modules/react-quill-new/node_modules/quill/formats/video.js
++++ b/node_modules/react-quill-new/node_modules/quill/formats/video.js
+@@ -1,5 +1,14 @@
+ import { BlockEmbed } from '../blots/block.js';
+ import Link from './link.js';
++function escapeHtml(value) {
++  return String(value).replace(/[&<>"']/g, char => ({
++    '&': '&amp;',
++    '<': '&lt;',
++    '>': '&gt;',
++    '"': '&quot;',
++    "'": '&#39;'
++  })[char]);
++}
+ const ATTRIBUTES = ['height', 'width'];
+ class Video extends BlockEmbed {
+   static blotName = 'video';
+@@ -41,7 +50,7 @@ class Video extends BlockEmbed {
+     const {
+       video
+     } = this.value();
+-    return `<a href="${video}">${video}</a>`;
++    return `<a href="${escapeHtml(video)}">${escapeHtml(video)}</a>`;
+   }
+ }
+ export default Video;
